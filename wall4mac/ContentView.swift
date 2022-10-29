@@ -3,9 +3,26 @@
 //  wall4mac
 //
 //  Created by 徐鹏飞 on 2022/10/1.
-//uy7
+
 
 import SwiftUI
+
+
+struct ImageAreaPreferenceKey : PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat){
+        value = nextValue()
+    }
+}
+
+struct ImageItemPreferenceKey : PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat){
+        value = nextValue()
+    }
+}
 
 struct ContentView: View {
     
@@ -16,6 +33,9 @@ struct ContentView: View {
     ]
     
     @State private var currentNavItem:Int = 1
+    @State private var imageAreaWidth:CGFloat = 1
+    @State private var imageItemWidth:CGFloat = 400
+    @State private var imageColumns:[GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     
     @ObservedObject var imageItemMode:ImageItemModel = ImageItemModel()
     
@@ -25,26 +45,73 @@ struct ContentView: View {
             List(navList){ item in
                 Label(item.name, systemImage:item.icon)
                     .frame(minWidth: 100,maxWidth: 200,alignment: .leading)
+                    .foregroundStyle(.linearGradient(colors: [.red,.blue], startPoint: .leading, endPoint: .trailing))
                     .padding(5)
-                    .background(currentNavItem == item.id ? .teal : .clear)
-                    .background(in:  RoundedRectangle(cornerRadius: 8) )
+                    .background(currentNavItem == item.id ? .gray : .clear)
                     .onTapGesture {
-                        currentNavItem = item.id
+                        withAnimation{
+                            currentNavItem = item.id
+                        }
                     }
+                    .tag(item.id)
+                    
             }
-            .frame(minWidth: 100,maxWidth: 200,maxHeight: .infinity)
+            .frame(minWidth: 200 , maxWidth: 200,maxHeight: .infinity)
+    
             .listStyle(.sidebar)
+            .listRowInsets(EdgeInsets(top: 5, leading: 1, bottom: 5, trailing: 1))
+            .zIndex(1)
             .background(.ultraThinMaterial)
             .task {
                 await imageItemMode.fetchImages()
             }
             
             
-            LazyHGrid(rows: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
-                ForEach(imageItemMode.imageItems) { list in
-                    AsyncImage(url: URL(string: list.thumbs.large!)).frame(minWidth:300)
+            ScrollView (.vertical) {
+                LazyVGrid(columns: imageColumns, alignment: .leading , spacing: 10) {
+                    
+                    ForEach(imageItemMode.imageItems) { list in
+                        AsyncImage(url: URL(string: list.thumbs.large!)) {image in
+                            image.resizable()
+                        } placeholder : {
+                            ProgressView().frame(width: imageItemWidth)
+                        }
+                        .cornerRadius(10)
+                        .padding(10)
+                        .shadow(color: Color.gray, radius: 5, x:5 ,y:5)
+                        .frame(width: 400)
+                    }.listRowInsets(EdgeInsets())
+                    
                 }
-            }  
+            }
+            .background(.ultraThinMaterial)
+            .background(Image("wallhaven-bg"))
+            .frame(minWidth: imageItemWidth * 2 + 100 , maxWidth: 9999)
+            .overlay{
+                GeometryReader{ proxy in
+                    Color.clear.preference(key: ImageAreaPreferenceKey.self,value: proxy.size.width)
+                }
+            }.onPreferenceChange(ImageAreaPreferenceKey.self){ value in
+                withAnimation{
+                    imageAreaWidth = value
+                    
+                    let cols =  Int(floorf(Float(imageAreaWidth / imageItemWidth)))
+                    
+                    // 如果计算出来的 column 有变化，则更新 VGrid 的列数
+                    if cols == imageColumns.count{
+                        return
+                    }
+                    var columns:[GridItem] = []
+                    for _ in 1...cols {
+                        columns.append(GridItem(.flexible()))
+                    }
+                    if columns.count > 0 {
+                        imageColumns  = columns;
+                    }
+                }
+            }
+            
+            
             
         }
     }
