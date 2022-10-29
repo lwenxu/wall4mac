@@ -54,9 +54,9 @@ class ImageItemModel : ObservableObject {
     @Published var imageMeta:ImageMeta = ImageMeta()
     
     @MainActor
-    func fetchImages() async {
+    func fetchImages(_ sorting:String = "date_added",_ page:Int = 1 ) async {
         do {
-            let url = URL(string: "https://wallhaven.cc/api/v1/search")!
+            let url = URL(string: "https://wallhaven.cc/api/v1/search?sorting=\(sorting)&page=\(page)")!
             let (data,_) = try await URLSession.shared.data(from: url)
             let searchRs = try JSONDecoder().decode(ImageSearchRs.self, from: data)
             imageItems = searchRs.data

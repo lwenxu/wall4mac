@@ -27,9 +27,9 @@ struct ImageItemPreferenceKey : PreferenceKey {
 struct ContentView: View {
     
     let navList = [
-        NavItem(id: 1, name: "Latest", icon: "tray"),
-        NavItem(id: 2, name: "Hot", icon: "flame"),
-        NavItem(id: 3, name: "Toplist", icon: "list.number")
+        NavItem(id: 1, name: "Latest", icon: "tray",sorting: "date_added"),
+        NavItem(id: 2, name: "Hot", icon: "flame",sorting: "views"),
+        NavItem(id: 3, name: "Toplist", icon: "list.number",sorting: "toplist")
     ]
     
     @State private var currentNavItem:Int = 1
@@ -37,34 +37,71 @@ struct ContentView: View {
     @State private var imageItemWidth:CGFloat = 400
     @State private var imageColumns:[GridItem] = [GridItem(.flexible()),GridItem(.flexible())]
     
+    @State private var pageNum:Int = 1
+    @State private var sorting:String = "date_added"
+    
     @ObservedObject var imageItemMode:ImageItemModel = ImageItemModel()
     
     var body: some View {
         HStack{
             
-            List(navList){ item in
-                Label(item.name, systemImage:item.icon)
-                    .frame(minWidth: 100,maxWidth: 200,alignment: .leading)
-                    .foregroundStyle(.linearGradient(colors: [.red,.blue], startPoint: .leading, endPoint: .trailing))
-                    .padding(5)
-                    .background(currentNavItem == item.id ? .gray : .clear)
-                    .onTapGesture {
-                        withAnimation{
-                            currentNavItem = item.id
+            VStack{
+                List(navList){ item in
+                    Label(item.name, systemImage:item.icon)
+                        .frame(minWidth: 100,maxWidth: 200,alignment: .leading)
+                        .foregroundStyle(.linearGradient(colors: [.red,.blue], startPoint: .leading, endPoint: .trailing))
+                        .padding(5)
+                        .background(currentNavItem == item.id ? .gray : .clear)
+                        .onTapGesture {
+                            
+                            pageNum = 1
+                            sorting = item.sorting
+                            
+                            Task{
+                                await imageItemMode.fetchImages(item.sorting,pageNum)
+                            }
+                            
+                            
+                            
+                            withAnimation{
+                                currentNavItem = item.id
+                            }
                         }
+                        .tag(item.id)
+                        
+                }
+                .frame(minWidth: 200 , maxWidth: 200,maxHeight: .infinity)
+                .listStyle(.sidebar)
+                .listRowInsets(EdgeInsets(top: 5, leading: 1, bottom: 5, trailing: 1))
+                
+                .background(.ultraThinMaterial)
+                .task {
+                    await imageItemMode.fetchImages()
+                }
+                
+                Group{
+                    Button{
+                        pageNum = pageNum>1 ? pageNum-1 : pageNum
+                        Task{
+                            await imageItemMode.fetchImages(sorting,pageNum)
+                        }
+                    } label:{
+                        Label("上一页", systemImage: "folder.badge.plus")
                     }
-                    .tag(item.id)
                     
-            }
-            .frame(minWidth: 200 , maxWidth: 200,maxHeight: .infinity)
-    
-            .listStyle(.sidebar)
-            .listRowInsets(EdgeInsets(top: 5, leading: 1, bottom: 5, trailing: 1))
-            .zIndex(1)
-            .background(.ultraThinMaterial)
-            .task {
-                await imageItemMode.fetchImages()
-            }
+                    Button{
+                        pageNum = pageNum + 1
+                        Task{
+                            await imageItemMode.fetchImages(sorting,pageNum)
+                        }
+                    } label:{
+                        Label("下一页", systemImage: "folder.badge.plus")
+                    }
+//                    Button(action: {
+//
+//                    }, label: Label("下一页"))
+                }
+            }.zIndex(1)
             
             
             ScrollView (.vertical) {
