@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F0408FD29163E230060F284 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0408FC29163E230060F284 /* Styles.swift */; };
+		5F382AD42916AA4C009B825D /* Wallpaper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F382AD32916AA4C009B825D /* Wallpaper.swift */; };
+		5F382AD62916AA79009B825D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F382AD52916AA79009B825D /* Utils.swift */; };
 		5FB4C214290ACB75004D5B96 /* NavItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4C213290ACB75004D5B96 /* NavItem.swift */; };
 		5FB4C216290AD624004D5B96 /* ImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4C215290AD624004D5B96 /* ImageItem.swift */; };
 		5FCF7BA628E834B3006E6E86 /* wall4macApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCF7BA528E834B3006E6E86 /* wall4macApp.swift */; };
@@ -16,6 +19,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F0408FC29163E230060F284 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
+		5F382AD32916AA4C009B825D /* Wallpaper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallpaper.swift; sourceTree = "<group>"; };
+		5F382AD52916AA79009B825D /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		5F382AD72917AAA0009B825D /* moa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = moa; path = ../moa; sourceTree = "<group>"; };
 		5FB4C213290ACB75004D5B96 /* NavItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavItem.swift; sourceTree = "<group>"; };
 		5FB4C215290AD624004D5B96 /* ImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageItem.swift; sourceTree = "<group>"; };
 		5FCF7BA228E834B3006E6E86 /* wall4mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wall4mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,6 +44,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F0408FB29163E0F0060F284 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				5F0408FC29163E230060F284 /* Styles.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
+		5F0408FE291640290060F284 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5F04090429166D300060F284 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				5F382AD72917AAA0009B825D /* moa */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		5F382AD22916AA3E009B825D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5F382AD32916AA4C009B825D /* Wallpaper.swift */,
+				5F382AD52916AA79009B825D /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		5FB4C212290ACB64004D5B96 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -49,6 +88,7 @@
 		5FCF7B9928E834B3006E6E86 = {
 			isa = PBXGroup;
 			children = (
+				5F04090429166D300060F284 /* Packages */,
 				5FCF7BA428E834B3006E6E86 /* wall4mac */,
 				5FCF7BA328E834B3006E6E86 /* Products */,
 			);
@@ -65,6 +105,9 @@
 		5FCF7BA428E834B3006E6E86 /* wall4mac */ = {
 			isa = PBXGroup;
 			children = (
+				5F382AD22916AA3E009B825D /* Utils */,
+				5F0408FE291640290060F284 /* Views */,
+				5F0408FB29163E0F0060F284 /* Styles */,
 				5FB4C212290ACB64004D5B96 /* Model */,
 				5FCF7BA528E834B3006E6E86 /* wall4macApp.swift */,
 				5FCF7BA728E834B3006E6E86 /* ContentView.swift */,
@@ -127,6 +170,8 @@
 				Base,
 			);
 			mainGroup = 5FCF7B9928E834B3006E6E86;
+			packageReferences = (
+			);
 			productRefGroup = 5FCF7BA328E834B3006E6E86 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -154,8 +199,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FB4C216290AD624004D5B96 /* ImageItem.swift in Sources */,
+				5F0408FD29163E230060F284 /* Styles.swift in Sources */,
 				5FCF7BA828E834B3006E6E86 /* ContentView.swift in Sources */,
+				5F382AD62916AA79009B825D /* Utils.swift in Sources */,
 				5FB4C214290ACB75004D5B96 /* NavItem.swift in Sources */,
+				5F382AD42916AA4C009B825D /* Wallpaper.swift in Sources */,
 				5FCF7BA628E834B3006E6E86 /* wall4macApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

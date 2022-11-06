@@ -46,6 +46,25 @@ struct ImageItem : Identifiable , Decodable {
         var original:String?
         var small:String?
     }
+    
+    @MainActor
+    func downloadImage() async -> String? {
+        do {
+            let filePath = "/Users/lwen/Documents/wallpaper/test/\(id).jpg"
+            if FileManager.default.fileExists(atPath: filePath) {
+                return filePath
+            }
+            
+            let (url,urlResponse) = try await URLSession.shared.download(for: URLRequest(url: URL(string: path)!))
+            
+            try FileManager.default.moveItem(atPath: url.path, toPath:filePath)
+            return filePath
+        }catch {
+            print("download image fail !",error)
+        }
+        return nil
+    }
+    
 }
 
 
