@@ -228,7 +228,7 @@ struct ContentView: View {
                             guard let path = imageDetailPath else {
                                 return
                             }
-                            try? Wallpaper.set(URL(fileURLWithPath: imageDetailPath!))
+                            try? Wallpaper.set(URL(fileURLWithPath: path))
                         }
                     
                     Image(systemName: "xmark.circle.fill")

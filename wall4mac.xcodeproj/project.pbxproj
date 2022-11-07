@@ -22,7 +22,6 @@
 		5F0408FC29163E230060F284 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		5F382AD32916AA4C009B825D /* Wallpaper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallpaper.swift; sourceTree = "<group>"; };
 		5F382AD52916AA79009B825D /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		5F382AD72917AAA0009B825D /* moa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = moa; path = ../moa; sourceTree = "<group>"; };
 		5FB4C213290ACB75004D5B96 /* NavItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavItem.swift; sourceTree = "<group>"; };
 		5FB4C215290AD624004D5B96 /* ImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageItem.swift; sourceTree = "<group>"; };
 		5FCF7BA228E834B3006E6E86 /* wall4mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wall4mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,7 +61,6 @@
 		5F04090429166D300060F284 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				5F382AD72917AAA0009B825D /* moa */,
 			);
 			name = Packages;
 			sourceTree = "<group>";

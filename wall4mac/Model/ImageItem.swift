@@ -55,7 +55,7 @@ struct ImageItem : Identifiable , Decodable {
                 return filePath
             }
             
-            let (url,urlResponse) = try await URLSession.shared.download(for: URLRequest(url: URL(string: path)!))
+            let (url,_) = try await URLSession.shared.download(for: URLRequest(url: URL(string: path)!))
             
             try FileManager.default.moveItem(atPath: url.path, toPath:filePath)
             return filePath
