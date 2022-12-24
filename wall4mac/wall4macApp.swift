@@ -11,7 +11,7 @@ import SwiftUI
 struct wall4macApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(EnvObjectsModel())
         }
     }
 }

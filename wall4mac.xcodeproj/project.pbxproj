@@ -16,6 +16,7 @@
 		5FCF7BA828E834B3006E6E86 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCF7BA728E834B3006E6E86 /* ContentView.swift */; };
 		5FCF7BAA28E834B5006E6E86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FCF7BA928E834B5006E6E86 /* Assets.xcassets */; };
 		5FCF7BAD28E834B5006E6E86 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FCF7BAC28E834B5006E6E86 /* Preview Assets.xcassets */; };
+		5FDB5591292876AD00DE0E03 /* EnvObjectsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB5590292876AD00DE0E03 /* EnvObjectsModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		5FCF7BA928E834B5006E6E86 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5FCF7BAC28E834B5006E6E86 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5FCF7BAE28E834B5006E6E86 /* wall4mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wall4mac.entitlements; sourceTree = "<group>"; };
+		5FDB5590292876AD00DE0E03 /* EnvObjectsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvObjectsModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			children = (
 				5FB4C213290ACB75004D5B96 /* NavItem.swift */,
 				5FB4C215290AD624004D5B96 /* ImageItem.swift */,
+				5FDB5590292876AD00DE0E03 /* EnvObjectsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 				5F0408FD29163E230060F284 /* Styles.swift in Sources */,
 				5FCF7BA828E834B3006E6E86 /* ContentView.swift in Sources */,
 				5F382AD62916AA79009B825D /* Utils.swift in Sources */,
+				5FDB5591292876AD00DE0E03 /* EnvObjectsModel.swift in Sources */,
 				5FB4C214290ACB75004D5B96 /* NavItem.swift in Sources */,
 				5F382AD42916AA4C009B825D /* Wallpaper.swift in Sources */,
 				5FCF7BA628E834B3006E6E86 /* wall4macApp.swift in Sources */,

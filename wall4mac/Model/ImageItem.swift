@@ -22,6 +22,7 @@ struct ImageMeta : Decodable {
 }
 
 struct ImageItem : Identifiable , Decodable {
+    var uid: UUID? = UUID()
     var id:String
     var url:String
     var short_url:String
@@ -73,15 +74,41 @@ class ImageItemModel : ObservableObject {
     @Published var imageMeta:ImageMeta = ImageMeta()
     
     @MainActor
-    func fetchImages(_ sorting:String = "date_added",_ page:Int = 1 ) async {
+    func fetchImages(_ sorting:String = "toplist",_ page:Int = 1 ) async {
         do {
             let url = URL(string: "https://wallhaven.cc/api/v1/search?sorting=\(sorting)&page=\(page)")!
             let (data,_) = try await URLSession.shared.data(from: url)
-            let searchRs = try JSONDecoder().decode(ImageSearchRs.self, from: data)
-            imageItems = searchRs.data
+            var searchRs = try JSONDecoder().decode(ImageSearchRs.self, from: data)
+            
+            imageItems = self.addUUID(searchRs.data)
+            imageMeta = searchRs.meta
+            
+        } catch {
+            print("request image error!",error)
+        }
+    }
+    
+    
+    @MainActor
+    func fetchMoreImages(_ sorting:String = "date_added",_ page:Int = 1 ) async {
+        do {
+            let url = URL(string: "https://wallhaven.cc/api/v1/search?sorting=\(sorting)&page=\(page)")!
+            let (data,_) = try await URLSession.shared.data(from: url)
+            var searchRs = try JSONDecoder().decode(ImageSearchRs.self, from: data)
+            
+            imageItems += self.addUUID(searchRs.data)
             imageMeta = searchRs.meta
         } catch {
             print("request image error!")
         }
+    }
+    
+    func addUUID( _ images: [ImageItem]) -> [ImageItem] {
+        var res: [ImageItem] = []
+        for var item in images {
+            item.uid = UUID()
+            res.append(item)
+        }
+        return res
     }
 }

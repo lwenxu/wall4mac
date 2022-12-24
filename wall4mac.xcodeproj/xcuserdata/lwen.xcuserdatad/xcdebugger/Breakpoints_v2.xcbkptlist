@@ -14,8 +14,8 @@
             filePath = "wall4mac/ContentView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
             landmarkName = "nav()"
             landmarkType = "7">
             <Locations>
@@ -55,23 +55,23 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2B2E6C37-CADD-4E01-AE0E-0E25344DB3E8"
+            uuid = "A6636772-1A54-4D61-85A1-4E3F38388B52"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "wall4mac/ContentView.swift"
+            filePath = "wall4mac/Model/ImageItem.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
-            landmarkName = "pagnation()"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "downloadImage()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "F7E8E933-ED30-4182-A1B9-EC1CDDDD722E"
+            uuid = "7550AC78-7EE0-489C-ACCC-7A08AA9AE85D"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -80,23 +80,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "120"
             endingLineNumber = "120"
-            landmarkName = "pagnation()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A6636772-1A54-4D61-85A1-4E3F38388B52"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "wall4mac/Model/ImageItem.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "downloadImage()"
+            landmarkName = "querySelector()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

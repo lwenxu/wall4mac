@@ -28,12 +28,20 @@ struct ImageItemPreferenceKey : PreferenceKey {
     }
 }
 
+struct ScrollPreferenceKey : PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
+}
+
 struct ContentView: View {
     
     let navList = [
-        NavItem(id: 1, name: "Latest", icon: "tray",sorting: "date_added"),
+        NavItem(id: 1, name: "Toplist", icon: "list.number",sorting: "toplist"),
         NavItem(id: 2, name: "Hot", icon: "flame",sorting: "views"),
-        NavItem(id: 3, name: "Toplist", icon: "list.number",sorting: "toplist")
+        NavItem(id: 3, name: "Latest", icon: "tray",sorting: "date_added")
     ]
     
     @State private var currentNavItem:Int = 1
@@ -48,7 +56,17 @@ struct ContentView: View {
     @State private var imageDetailModel:ImageItem? = nil
     @State private var imageDetailPath:String? = nil
     
+    
+    @AppStorage("queryAdultMode") private var queryAdultMode:Bool = false
+    @AppStorage("changeIntervalMin") private var changeIntervalMin:String = "\(60*30)"
+    @AppStorage("queryrResolution") private var queryrResolution:String = "16:9"
+    @State private var restartInterval:Bool = false
+    @State private var scrollCoord:CGFloat = 0
+    
     @ObservedObject var imageItemMode:ImageItemModel = ImageItemModel()
+    
+    @EnvironmentObject var envObjModel:EnvObjectsModel
+    
     
     func nav() -> some View {
         VStack{
@@ -92,39 +110,51 @@ struct ContentView: View {
             .padding(.leading,15)
             .task {
                 await imageItemMode.fetchImages()
+                Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { timer in
+                    print("timmer doing...")
+                }
             }
     }
     
     
-    func pagnation() -> some View {
+    func querySelector() -> some View {
         VStack{
             
             Text("当前 \(imageItemMode.imageMeta.current_page) 页, 共 \(imageItemMode.imageMeta.last_page) 页").foregroundColor(.primary.opacity(0.4))
+            TextField("自动更换时间（单位分钟），0 不自动更新", text: $changeIntervalMin)
+        
+//            VStack (alignment:.leading){
+//                HStack{
+//                    Text("开启成人模式:").font(.title3)
+//                    Toggle(isOn: $queryAdultMode) {
+//                    }.onTapGesture {
+//                        print("asdfafa")
+//                        Task{
+//                            await imageItemMode.fetchImages(sorting,1)
+//                        }
+//                    }
+//                }.frame(width: 150)
+//
+//
+//                VStack {
+//                    Text("选择分辨率").font(.title3)
+//                    Picker(selection: $queryrResolution,label: Text("")) {
+//                                    ForEach(["16:9","16:10","4:3"],id: \.self) { resolution in
+//                                        Text(resolution).font(.title3).tag(resolution)
+//                                    }
+//                    }.pickerStyle(.segmented)
+//                    .onTapGesture {
+//                        print("asdfafa")
+//                        Task{
+//                            await imageItemMode.fetchImages(sorting,1)
+//                        }
+//                    }
+//                }.frame(width: 150)
+//            }
             
-            HStack {
-                Button{
-                    pageNum = pageNum>1 ? pageNum-1 : pageNum
-                    Task{
-                        await imageItemMode.fetchImages(sorting,pageNum)
-                    }
-                } label:{
-                    Image(systemName: "chevron.backward.2")
-                    Text("上一页")
-                }.focusable(false)
-                    .disabled(pageNum<=1)
-                
-                Button{
-                    pageNum = pageNum + 1
-                    Task{
-                        await imageItemMode.fetchImages(sorting,pageNum)
-                    }
-                } label:{
-                    Text("下一页")
-                    Image(systemName: "chevron.forward.2")
-                }.focusable(false)
-            }
+            
         }.padding(20)
-            .frame(minWidth: 200, maxWidth: 200, minHeight: 80, maxHeight: 80, alignment: .top)
+            .frame(minWidth: 200, maxWidth: 200, minHeight: 80, maxHeight: 100, alignment: .top)
             .background(.regularMaterial, in:RoundedRectangle(cornerRadius: 8,style: .continuous))
             .padding(.leading,15)
     }
@@ -134,7 +164,7 @@ struct ContentView: View {
         ScrollView (.vertical) {
             LazyVGrid(columns: imageColumns, alignment: .leading , spacing: 10) {
                 
-                ForEach(imageItemMode.imageItems) { list in
+                ForEach(imageItemMode.imageItems,id: \.uid) { list in
                     AsyncImage(url: URL(string: list.thumbs.large!)) {image in
                         image.resizable()
                     } placeholder : {
@@ -165,12 +195,12 @@ struct ContentView: View {
                     .shadow(color: Color.gray, radius: 5, x:5 ,y:5)
                     .frame(width: 400)
                     .onHover(perform: { isHover in
-                        withAnimation(.easeIn(duration: 0.3)) {
+                        withAnimation(.easeInOut(duration: 0.1)) {
                             hoverImageIdx = isHover ? list.id : nil
                         }
                     })
                     .onTapGesture {
-                        withAnimation(.easeIn(duration: 0.3)){
+                        withAnimation(.easeInOut(duration: 0.3)){
                             imageDetailModel = list
                         }
                         Task{
@@ -178,12 +208,26 @@ struct ContentView: View {
                             imageDetailPath = path
                         }
                     }
+                    
+//                    if list.id == imageItemMode.imageItems[imageItemMode.imageItems.count-1]{
+//                        Divider()
+//                    }
+                    
                 }.listRowInsets(EdgeInsets())
                 
+                
+                Color.clear.onAppear(perform: {
+                    pageNum = pageNum + 1
+                    Task{
+                        await imageItemMode.fetchMoreImages(sorting,pageNum)
+                    }
+                })
+            
             }
         }
-        
         .frame(minWidth: imageItemWidth * 2 + 100 , maxWidth: 9999)
+        .coordinateSpace(name: "imageView")
+        .background(Color.blue, in: Rectangle())
         .overlay{
             GeometryReader{ proxy in
                 Color.clear.preference(key: ImageAreaPreferenceKey.self,value: proxy.size.width)
@@ -206,6 +250,8 @@ struct ContentView: View {
                     imageColumns  = columns;
                 }
             }
+            
+           
         }
         
         
@@ -214,8 +260,6 @@ struct ContentView: View {
     func imageDetailView() -> some View {
         
         VStack{
-            
-            
             AsyncImage(url: URL(string: (imageDetailModel?.path)!)) {image in
                 
                 HStack{
@@ -240,7 +284,7 @@ struct ContentView: View {
                         }
                 }
                 image.resizable().scaledToFit()
-               
+                
             } placeholder : {
                 ProgressView().frame(width: imageItemWidth)
             }
@@ -253,33 +297,37 @@ struct ContentView: View {
     }
     
     var body: some View {
-        HStack {
-            
-            VStack (spacing: 20){
+        ZStack {
+            HStack {
                 
-                nav()
+                VStack (spacing: 20){
+                    
+                    nav()
+                    
+                    querySelector()
+                    
+//                    Text("\(scrollCoord)")
+                    
+                    Spacer()
+                    
+                }.padding(.top,20)
+                    .padding(.bottom , 20)
+                    .padding(.leading,5)
+                    .padding(.trailing,15)
                 
-                pagnation()
-                
-                Spacer()
-                
-            }.padding(.top,20)
-                .padding(.bottom , 20)
-                .padding(.leading,5)
-            
-            ZStack {
                 imageList()
                 
-                if imageDetailModel != nil {
-                    backgroundBlur()
-                    imageDetailView()
-                }
+            }
+            
+            if imageDetailModel != nil {
+                backgroundBlur()
+                imageDetailView()
             }
             
         }
         .background(.ultraThinMaterial)
-//        .background(Image("bg-\(Int.random(in: 1...6))")
         .background(Image("bg-6").resizable().scaledToFill())
+        
     }
     
     
